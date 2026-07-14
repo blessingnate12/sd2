@@ -2,16 +2,23 @@ const express = require('express');
 const app = express();
 const db = require('./services/db');
 
+// Use the Pug templating engine
+app.set('view engine', 'pug');
+app.set('views', './app/views');
+
 // Set up static files folder
 app.use(express.static('static'));
 
 // ==========================================
-// LAB 4 ROUTING EXERCISES
+// LAB 4 ROUTING EXERCISES & MVC REFACTORING
 // ==========================================
 
-// EXERCISE 1: Custom welcome route (Updated with your name!)
+// EXERCISE 1 & REFACTOR: Custom welcome route rendering via Pug
 app.get("/", function(req, res) {
-    res.send("Hello nathan blessing!");
+    res.render("index", {
+        'title': 'My index page', 
+        'heading': 'Hello nathan blessing!'
+    });
 });
 
 // EXERCISE 2 & 3: Roehampton route with console logging
@@ -36,11 +43,15 @@ app.get("/student/:name/:id", function(req, res) {
     res.send("Student Name: " + req.params.name + " | Student ID: " + req.params.id);
 });
 
-// Original database test route
+// PUG REFACTOR - EXERCISE 1, 2, & 3: Database driven app route using templates
 app.get("/db_test", async function(req, res) {
     try {
         const rows = await db.query("SELECT * FROM test_table");
-        res.json(rows);
+        console.log(rows);
+        res.render('db', { 
+            title: 'Database Test', 
+            data: rows 
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send("Database query error");
