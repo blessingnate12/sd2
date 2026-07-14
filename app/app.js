@@ -17,7 +17,7 @@ app.use(express.static('static'));
 app.get("/", function(req, res) {
     res.render("index", {
         'title': 'My index page', 
-        'heading': 'Hello nathan blessing!'
+        'heading': 'Hello Nathan Blessing!'
     });
 });
 
